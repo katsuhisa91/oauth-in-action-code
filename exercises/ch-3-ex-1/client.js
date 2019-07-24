@@ -46,11 +46,15 @@ app.get('/authorize', function(req, res){
 	 * Send the user to the authorization server
 	 */
 
-        // 認可エンドポイントのURL
+        // サーバ経由のリクエストであることを保証するためのランダムなパラメータ
+        var state = randomstring.generate()
+
+        // 認可エンドポイントのURLへリダイレクト
         var authorizeUrl = buildUrl(authServer.authorizationEndpoint, {
           response_type: 'code',
           client_id: client.client_id,
           redirect_uri: client.redirect_uris[0]
+          state: state
         });
 
         res.redirect(authorizeUrl);
@@ -69,7 +73,7 @@ app.get('/callback', function(req, res){
         var form_data = qs.stringify({
           grant_type: 'authorization_code',
           code: code,
-          redirect_uri: client.redirect_urls[0]
+          redirect_uri: client.redirect_uris[0]
         });
 
         // Basic認証を行うため、リクエストヘッダを組み立て
