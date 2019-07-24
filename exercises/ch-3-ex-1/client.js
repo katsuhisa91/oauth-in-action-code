@@ -48,10 +48,10 @@ app.get('/authorize', function(req, res){
 
         // 認可エンドポイントのURL
         var authorizeUrl = buildUrl(authServer.authorizationEndpoint, {
-                response_type: 'code',
-                client_id: client.client_id,
-                redirect_uri: client.redirect_uris[0]
-          });
+          response_type: 'code',
+          client_id: client.client_id,
+          redirect_uri: client.redirect_uris[0]
+        });
 
         res.redirect(authorizeUrl);
 });
@@ -74,14 +74,14 @@ app.get('/callback', function(req, res){
 
         // Basic認証を行うため、リクエストヘッダを組み立て
         var headers = {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Basic ' + encodeClientCredentials(client.client_id, client.client_secret)
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Basic ' + encodeClientCredentials(client.client_id, client.client_secret)
         }
 
         // 認可サーバへPOSTする
         var tokRes = request('POST', authServer.tokenEndpoint, {
-                body: form_data,
-                headers: headers
+          body: form_data,
+          headers: headers
         });
 
         // body を解析し、アクセストークンを受け取り
