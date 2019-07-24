@@ -65,7 +65,7 @@ app.get('/callback', function(req, res){
 	var code = req.query.code;
 　      // 認可コードをトークンエンドポイントへ送信
         var form_data = qs.stringify({
-          grant_type: ’authorization_code’,
+          grant_type: 'authorization_code',
           code: code,
           redirect_uri: client.redirect_urls[0]
         });
