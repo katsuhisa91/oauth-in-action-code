@@ -61,14 +61,33 @@ app.get('/callback', function(req, res){
 	/*
 	 * Parse the response from the authorization server and get a token
 	 */
+
         // 認可コードを読み取り
 	var code = req.query.code;
+
 　      // 認可コードをトークンエンドポイントへ送信
         var form_data = qs.stringify({
           grant_type: 'authorization_code',
           code: code,
           redirect_uri: client.redirect_urls[0]
         });
+
+        // Basic認証を行うため、リクエストヘッダを組み立て
+        var headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + encodeClientCredentials(client.client_id, client.client_secret)
+        }
+
+        // 認可サーバへPOSTする
+        var tokRes = request('POST', authServer.tokenEndpoint, {
+                body: form_data,
+                headers: headers
+        });
+
+        // body を解析し、アクセストークンを受け取り
+        var body = JSON.parse(tokRes.getBody());
+        access_token = body.access_token;
+
 });
 
 app.get('/fetch_resource', function(req, res) {
