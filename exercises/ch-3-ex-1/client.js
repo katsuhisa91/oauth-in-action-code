@@ -23,12 +23,9 @@ var authServer = {
 // client information
 
 
-/*
- * Add the client information in here
- */
 var client = {
-	"client_id": "",
-	"client_secret": "",
+	"client_id": "oauth-client-1",
+	"client_secret": "oauth-client-secret-1",
 	"redirect_uris": ["http://localhost:9000/callback"]
 };
 
@@ -48,7 +45,15 @@ app.get('/authorize', function(req, res){
 	/*
 	 * Send the user to the authorization server
 	 */
-	
+
+        // 認可エンドポイントのURL
+        var authorizeUrl = buildUrl(authServer.authorizationEndpoint, {
+                response_type: 'code',
+                client_id: client.client_id,
+                redirect_uri: client.redirect_uris[0]
+          });
+
+        res.redirect(authorizeUrl);
 });
 
 app.get('/callback', function(req, res){
