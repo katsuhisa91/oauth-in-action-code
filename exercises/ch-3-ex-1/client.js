@@ -53,7 +53,7 @@ app.get('/authorize', function(req, res){
         var authorizeUrl = buildUrl(authServer.authorizationEndpoint, {
           response_type: 'code',
           client_id: client.client_id,
-          redirect_uri: client.redirect_uris[0]
+          redirect_uri: client.redirect_uris[0],
           state: state
         });
 
