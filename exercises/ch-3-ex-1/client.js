@@ -61,7 +61,14 @@ app.get('/callback', function(req, res){
 	/*
 	 * Parse the response from the authorization server and get a token
 	 */
-	
+        // 認可コードを読み取り
+	var code = req.query.code;
+　      // 認可コードをトークンエンドポイントへ送信
+        var form_data = qs.stringify({
+          grant_type: ’authorization_code’,
+          code: code,
+          redirect_uri: client.redirect_urls[0]
+        });
 });
 
 app.get('/fetch_resource', function(req, res) {
