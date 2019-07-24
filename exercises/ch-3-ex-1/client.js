@@ -56,7 +56,6 @@ app.get('/authorize', function(req, res){
           redirect_uri: client.redirect_uris[0],
           state: state
         });
-
         res.redirect(authorizeUrl);
 });
 
@@ -65,6 +64,12 @@ app.get('/callback', function(req, res){
 	/*
 	 * Parse the response from the authorization server and get a token
 	 */
+
+        // Stateの値を検証し、サーバ経由のリダイレクトであることを確認する
+        if (req.query.state = state) {
+          res.render('error', { error: 'State value did not match' });
+          return;
+        }
 
         // 認可コードを読み取り
 	var code = req.query.code;
